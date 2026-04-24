@@ -1,15 +1,67 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model UATDocument {
+  id            String   @id @default(cuid())
+  docNo         String?  @unique
+  createDate    DateTime @default(now())
+
+  projectName   String?
+  testerName    String?
+  staffId       String?
+  department    String?
+  phone         String?
+  testLocation  String?
+  testDate      DateTime?
+  systemVersion String?
+  referenceDoc  String?
+
+  testResultSummary String?
+
+  // Approval Section 4
+  testerSignName    String?
+  testerSignDate    DateTime?
+  approverSignName  String?
+  approverSignDate  DateTime?
+
+  // Approval Section 5
+  programmerSignName String?
+  programmerSignDate DateTime?
+  deployerSignName   String?
+  deployerSignDate   DateTime?
+  appTeamLeadSignName String?
+  appTeamLeadSignDate DateTime?
+
+  status        String   @default("Draft") // Draft / In Progress / Completed
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  testCases     UATTestCase[]
+
+  @@index([docNo])
+}
+
+model UATTestCase {
+  id              String   @id @default(cuid())
+  documentId      String
+
+  tcNo            String?
+  testCaseDetail  String
+  status          String? // Pass / Fail (mapped to check/X)
+  remark          String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  document UATDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
 }
