@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getUATHistory } from "../lib/actions";
+import { getUATHistory, updateUATStatus } from "../lib/actions";
 import { FileText, Calendar, User, Search, Eye, Filter } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -15,16 +15,35 @@ const UATHistory = ({ onViewDetails, onCreateNew }: UATHistoryProps) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const fetchHistory = async () => {
+    setLoading(true);
+    const result = await getUATHistory();
+    if (result.success) {
+      setRecords(result.data || []);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchHistory = async () => {
-      const result = await getUATHistory();
-      if (result.success) {
-        setRecords(result.data || []);
-      }
-      setLoading(false);
-    };
     fetchHistory();
   }, []);
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    if (newStatus === "Pending") return;
+    
+    const statusLabel = newStatus === "Completed" ? "เสร็จสิ้น" : "ยกเลิก";
+    const confirmed = window.confirm(`คุณต้องการเปลี่ยนสถานะเป็น "${statusLabel}" ใช่หรือไม่?\nหากเปลี่ยนแล้วจะไม่สามารถแก้ไขข้อมูลได้อีก`);
+    
+    if (confirmed) {
+      const result = await updateUATStatus(id, newStatus);
+      if (result.success) {
+        // Refresh the list
+        fetchHistory();
+      } else {
+        alert("ไม่สามารถเปลี่ยนสถานะได้: " + result.error);
+      }
+    }
+  };
 
   const filteredRecords = records.filter(r => 
     r.projectName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -107,12 +126,24 @@ const UATHistory = ({ onViewDetails, onCreateNew }: UATHistoryProps) => {
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      <span className={cn(
-                        "px-2.5 py-1 rounded-full text-xs font-bold ring-1 ring-inset",
-                        record.status === 'Completed' ? "bg-green-50 text-green-700 ring-green-600/20" : "bg-zinc-50 text-zinc-700 ring-zinc-600/20"
-                      )}>
-                        {record.status}
-                      </span>
+                      {record.status === "Completed" || record.status === "Cancelled" ? (
+                        <span className={cn(
+                          "px-2.5 py-1 rounded-full text-xs font-bold ring-1 ring-inset inline-block",
+                          record.status === 'Completed' ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20" : "bg-red-50 text-red-700 ring-red-600/20"
+                        )}>
+                          {record.status === 'Completed' ? 'เสร็จสิ้น' : 'ยกเลิก'}
+                        </span>
+                      ) : (
+                        <select 
+                          className="px-2.5 py-1 rounded-full text-xs font-bold border border-amber-200 bg-amber-50 text-amber-700 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500/20"
+                          value={record.status || "Pending"}
+                          onChange={(e) => handleStatusChange(record.id, e.target.value)}
+                        >
+                          <option value="Pending">รอการยืนยัน</option>
+                          <option value="Completed">เสร็จสิ้น</option>
+                          <option value="Cancelled">ยกเลิก</option>
+                        </select>
+                      )}
                     </td>
                     <td className="py-4 px-6 text-right">
                       <button 

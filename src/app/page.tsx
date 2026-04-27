@@ -3,9 +3,11 @@
 import { useState } from "react";
 import UATForm from "../components/UATForm";
 import UATHistory from "../components/UATHistory";
+import UATDashboard from "../components/UATDashboard";
+import NotificationBell from "../components/NotificationBell";
 
 export default function Home() {
-  const [view, setView] = useState<"history" | "create">("history");
+  const [view, setView] = useState<"history" | "create" | "dashboard">("dashboard");
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
   const handleViewDetails = async (id: string) => {
@@ -36,6 +38,12 @@ export default function Home() {
            </div>
            <div className="flex gap-4">
               <button 
+                onClick={() => setView("dashboard")}
+                className={`text-sm font-medium transition-colors ${view === 'dashboard' ? 'text-blue-600' : 'text-zinc-500 hover:text-zinc-900'}`}
+              >
+                แดชบอร์ด
+              </button>
+              <button 
                 onClick={() => setView("history")}
                 className={`text-sm font-medium transition-colors ${view === 'history' ? 'text-blue-600' : 'text-zinc-500 hover:text-zinc-900'}`}
               >
@@ -47,12 +55,17 @@ export default function Home() {
               >
                 สร้างเอกสารใหม่
               </button>
+              <div className="pl-2 ml-2 border-l border-zinc-200 flex items-center">
+                <NotificationBell />
+              </div>
            </div>
         </div>
       </nav>
 
       <main className="py-8">
-        {view === "history" ? (
+        {view === "dashboard" ? (
+          <UATDashboard />
+        ) : view === "history" ? (
           <UATHistory 
             onCreateNew={handleCreateNew} 
             onViewDetails={handleViewDetails}

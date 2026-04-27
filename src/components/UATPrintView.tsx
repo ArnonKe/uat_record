@@ -26,12 +26,13 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
         ref={ref}
         className="bg-white text-black"
         style={{
-          fontFamily: "'TH Sarabun New', 'Sarabun', sans-serif",
-          fontSize: "13px",
-          lineHeight: "1.4",
+          fontFamily:
+            "'Times New Roman', 'TH Sarabun New', 'Sarabun', sans-serif",
+          fontSize: "16px",
+          lineHeight: "1.0",
           width: "210mm",
-          minHeight: "297mm",
-          padding: "20mm",
+          padding: "3mm",
+          paddingTop: "0mm",
           margin: "0 auto",
           boxSizing: "border-box",
           display: "flex",
@@ -45,59 +46,73 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
-              position: "relative",
-              marginBottom: "18px",
+              marginBottom: "12px",
             }}
           >
             {/* Logo */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                width: "70px",
-              }}
-            >
+            <div style={{ width: "80px" }}>
               <img
                 src="/logonew.png"
                 alt="SC Group Logo"
-                style={{ width: "100%", height: "auto", display: "block" }}
+                style={{ width: "70px", height: "auto", display: "block" }}
               />
             </div>
 
+            {/* Title Block */}
             <div
               style={{
-                position: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
                 textAlign: "center",
-                width: "100%",
+                flex: 1,
+                paddingTop: "10px",
+                marginTop: "25px",
               }}
             >
-              <div style={{ fontWeight: "bold", fontSize: "18px" }}>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "22px",
+                  lineHeight: "1.2",
+                }}
+              >
                 User Acceptance Test
               </div>
               <div
                 style={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
+                  fontSize: "24px",
                   marginTop: "2px",
+                  fontFamily: "'Browallia New', sans-serif",
                 }}
               >
                 แบบฟอร์มการรับรองการทดสอบระบบโดยผู้ใช้งาน
               </div>
             </div>
 
-            <div style={{ fontWeight: "bold", fontSize: "13px" }}>UAT</div>
-          </div>
-
-          {/* ===== SECTION 1 ===== */}
-          <section style={{ marginBottom: "12px" }}>
+            {/* UAT Label */}
             <div
               style={{
                 fontWeight: "bold",
-                fontSize: "14px",
-                marginBottom: "3px",
+                fontSize: "16px",
+                width: "80px",
+                textAlign: "right",
+                paddingTop: "10px",
+                marginTop: "30px",
+              }}
+            >
+              UAT
+            </div>
+          </div>
+          {/* ===== SECTION 1 ===== */}
+          <section
+            style={{
+              marginBottom: "8px",
+              fontFamily: "'Angsana New', sans-serif",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "600",
+                fontSize: "24px",
+                marginBottom: "6px",
                 display: "flex",
                 gap: "4px",
               }}
@@ -105,7 +120,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
               <span>1.</span>
               <span>ข้อมูลทั่วไปของโครงการ</span>
             </div>
-            <div style={{ paddingLeft: "20px" }}>
+            <div style={{ paddingLeft: "20px", fontSize: "20px" }}>
               {/* ชื่อโครงการ */}
               <div
                 style={{
@@ -113,19 +128,20 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                   gap: "6px",
                   alignItems: "baseline",
                   marginBottom: "2px",
+                  fontSize: "20px",
                 }}
               >
-                <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                   ชื่อโครงการ
                 </span>
                 <span
                   style={{
                     flex: 1,
                     borderBottom: "1px dotted black",
-                    minHeight: "18px",
+                    minHeight: "20px",
                   }}
                 >
-                  {data.projectName || dots(80)}
+                  {data.projectName || ""}
                 </span>
               </div>
 
@@ -134,7 +150,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: "24px",
+                  gap: "32px",
                   marginBottom: "2px",
                 }}
               >
@@ -145,17 +161,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     Document Number
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                     }}
                   >
-                    {data.docNo || dots(40)}
+                    {data.docNo || ""}
                   </span>
                 </div>
                 <div
@@ -165,14 +181,14 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     Create Date
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                       textAlign: "center",
                     }}
                   >
@@ -188,7 +204,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: "24px",
+                  gap: "32px",
                   marginBottom: "2px",
                 }}
               >
@@ -199,17 +215,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     ผู้ทดสอบ (UAT Tester)
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                     }}
                   >
-                    {data.testerName || dots(30)}
+                    {data.testerName || ""}
                   </span>
                 </div>
                 <div
@@ -219,17 +235,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     รหัสพนักงาน
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                     }}
                   >
-                    {data.staffId || dots(30)}
+                    {data.staffId || ""}
                   </span>
                 </div>
               </div>
@@ -239,7 +255,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: "24px",
+                  gap: "32px",
                   marginBottom: "2px",
                 }}
               >
@@ -250,17 +266,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     หน่วยงาน/แผนก
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                     }}
                   >
-                    {data.department || dots(30)}
+                    {data.department || ""}
                   </span>
                 </div>
                 <div
@@ -270,17 +286,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     เบอร์โทร
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                     }}
                   >
-                    {data.phone || dots(30)}
+                    {data.phone || ""}
                   </span>
                 </div>
               </div>
@@ -290,7 +306,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: "24px",
+                  gap: "32px",
                   marginBottom: "2px",
                 }}
               >
@@ -301,17 +317,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     สถานที่ทดสอบ
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                     }}
                   >
-                    {data.testLocation || dots(30)}
+                    {data.testLocation || ""}
                   </span>
                 </div>
                 <div
@@ -321,18 +337,18 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     alignItems: "baseline",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                     วันที่ทดสอบ
                   </span>
                   <span
                     style={{
                       flex: 1,
                       borderBottom: "1px dotted black",
-                      minHeight: "18px",
+                      minHeight: "20px",
                       textAlign: "center",
                     }}
                   >
-                    {data.testDate ? formatDate(data.testDate) : dots(25)}
+                    {data.testDate ? formatDate(data.testDate) : ""}
                   </span>
                 </div>
               </div>
@@ -346,17 +362,17 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                   marginBottom: "2px",
                 }}
               >
-                <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                   เวอร์ชันระบบที่ทดสอบ
                 </span>
                 <span
                   style={{
                     flex: 1,
                     borderBottom: "1px dotted black",
-                    minHeight: "18px",
+                    minHeight: "20px",
                   }}
                 >
-                  {data.systemVersion || dots(70)}
+                  {data.systemVersion || ""}
                 </span>
               </div>
 
@@ -369,24 +385,28 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                   marginBottom: "2px",
                 }}
               >
-                <span style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                <span style={{ fontWeight: "500", whiteSpace: "nowrap" }}>
                   เอกสารอ้างอิง
                 </span>
                 <span
                   style={{
                     flex: 1,
                     borderBottom: "1px dotted black",
-                    minHeight: "18px",
+                    minHeight: "20px",
                   }}
                 >
-                  {data.referenceDoc || dots(75)}
+                  {data.referenceDoc || ""}
                 </span>
               </div>
             </div>
           </section>
-
           {/* ===== SECTION 2 ===== */}
-          <section style={{ marginBottom: "12px" }}>
+          <section
+            style={{
+              marginBottom: "5px",
+              fontFamily: "'Angsana New', sans-serif",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -397,8 +417,8 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
             >
               <div
                 style={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
+                  fontWeight: "600",
+                  fontSize: "24px",
                   display: "flex",
                   gap: "4px",
                 }}
@@ -408,7 +428,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
               </div>
               <span
                 style={{
-                  fontSize: "10px",
+                  fontSize: "14px",
                   fontStyle: "italic",
                   textDecoration: "underline",
                   paddingRight: "4px",
@@ -422,7 +442,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
               style={{
                 width: "100%",
                 borderCollapse: "collapse",
-                fontSize: "12px",
+                fontSize: "24px",
                 textAlign: "center",
               }}
             >
@@ -475,7 +495,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 }).map((_, i) => {
                   const tc = data.testCases?.[i];
                   return (
-                    <tr key={i} style={{ height: "26px" }}>
+                    <tr key={i} style={{ height: "22px" }}>
                       <td
                         style={{
                           border: "1px solid black",
@@ -514,7 +534,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              fontSize: "11px",
+                              fontSize: "15px",
                               fontWeight: "bold",
                             }}
                           >
@@ -542,7 +562,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
             </table>
             <div
               style={{
-                fontSize: "10px",
+                fontSize: "14px",
                 fontWeight: "bold",
                 marginTop: "3px",
                 marginLeft: "16px",
@@ -552,14 +572,18 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
               ** หมายเหตุ : สถานะ ✓ = ผ่าน / X = ไม่ผ่าน
             </div>
           </section>
-
           {/* ===== SECTION 3 ===== */}
-          <section style={{ marginBottom: "12px" }}>
+          <section
+            style={{
+              marginBottom: "20px",
+              fontFamily: "'Angsana New', sans-serif",
+            }}
+          >
             <div
               style={{
-                fontWeight: "bold",
-                fontSize: "14px",
-                marginBottom: "3px",
+                fontWeight: "600",
+                fontSize: "24px",
+                marginBottom: "4px",
                 display: "flex",
                 gap: "4px",
               }}
@@ -574,24 +598,29 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                   minHeight: "22px",
                   paddingBottom: "2px",
                   marginBottom: "6px",
-                  fontSize: "13px",
+                  fontSize: "18px",
+                  lineHeight: "1.6",
                 }}
               >
-                {data.testResultSummary || dots(100)}
+                {data.testResultSummary || ""}
               </div>
               <div
                 style={{ borderBottom: "1px dotted black", minHeight: "22px" }}
               ></div>
             </div>
           </section>
-
           {/* ===== SECTION 4 ===== */}
-          <section style={{ marginBottom: "12px" }}>
+          <section
+            style={{
+              marginBottom: "12px",
+              fontFamily: "'Angsana New', sans-serif",
+            }}
+          >
             <div
               style={{
-                fontWeight: "bold",
-                fontSize: "14px",
-                marginBottom: "3px",
+                fontWeight: "600",
+                fontSize: "24px",
+                marginBottom: "4px",
                 display: "flex",
                 gap: "4px",
               }}
@@ -603,16 +632,27 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-                paddingLeft: "20px",
+                border: "1px solid black",
+                margin: "0 auto",
+                width: "600px",
+                fontSize: "20px",
               }}
             >
               {/* ผู้ทดสอบ */}
-              <div style={{ border: "1px solid black", padding: "10px" }}>
+              <div
+                style={{
+                  padding: "10px",
+                  borderRight: "1px solid black",
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "160px",
+                  fontFamily: "'Angsana New', sans-serif",
+                  fontSize: "20px",
+                }}
+              >
                 <div
                   style={{
                     fontWeight: "bold",
-                    fontSize: "12px",
                     textDecoration: "underline",
                     marginBottom: "8px",
                   }}
@@ -622,58 +662,61 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 <div
                   style={{
                     textAlign: "center",
-                    fontSize: "12px",
-                    marginBottom: "24px",
+                    marginBottom: "auto",
                   }}
                 >
                   (ลงนาม) ผู้ทดสอบ
                 </div>
-                <div
-                  style={{
-                    textAlign: "center",
-                    borderBottom: "1px dotted black",
-                    minHeight: "20px",
-                    fontSize: "12px",
-                    marginBottom: "6px",
-                    padding: "0 8px",
-                  }}
-                >
-                  {data.testerSignName
-                    ? `(${data.testerSignName})`
-                    : `(${dots(35)})`}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "8px",
-                    fontSize: "12px",
-                    alignItems: "baseline",
-                  }}
-                >
-                  <span style={{ fontWeight: "bold" }}>วันที่</span>
-                  <span
+                <div>
+                  <div
                     style={{
-                      borderBottom: "1px dotted black",
-                      flex: 1,
-                      maxWidth: "120px",
                       textAlign: "center",
-                      minHeight: "18px",
+                      borderBottom: "1px dotted black",
+                      minHeight: "20px",
+                      marginBottom: "6px",
+                      padding: "0 8px",
                     }}
                   >
-                    {data.testerSignDate
-                      ? formatDate(data.testerSignDate)
-                      : dots(20)}
-                  </span>
+                    {data.testerSignName ? `(${data.testerSignName})` : ""}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "8px",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <span style={{ fontWeight: "bold" }}>วันที่</span>
+                    <span
+                      style={{
+                        borderBottom: "1px dotted black",
+                        flex: 1,
+                        maxWidth: "120px",
+                        textAlign: "center",
+                        minHeight: "18px",
+                      }}
+                    >
+                      {data.testerSignDate
+                        ? formatDate(data.testerSignDate)
+                        : ""}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               {/* ผู้รับรอง */}
-              <div style={{ border: "1px solid black", padding: "10px" }}>
+              <div
+                style={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "160px",
+                }}
+              >
                 <div
                   style={{
                     fontWeight: "bold",
-                    fontSize: "12px",
                     textDecoration: "underline",
                     marginBottom: "8px",
                   }}
@@ -683,61 +726,62 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 <div
                   style={{
                     textAlign: "center",
-                    fontSize: "12px",
-                    marginBottom: "24px",
+                    marginBottom: "auto",
                   }}
                 >
                   (ลงนาม) ผู้บังคับบัญชา
                 </div>
-                <div
-                  style={{
-                    textAlign: "center",
-                    borderBottom: "1px dotted black",
-                    minHeight: "20px",
-                    fontSize: "12px",
-                    marginBottom: "6px",
-                    padding: "0 8px",
-                  }}
-                >
-                  {data.approverSignName
-                    ? `(${data.approverSignName})`
-                    : `(${dots(35)})`}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "8px",
-                    fontSize: "12px",
-                    alignItems: "baseline",
-                  }}
-                >
-                  <span style={{ fontWeight: "bold" }}>วันที่</span>
-                  <span
+                <div>
+                  <div
                     style={{
-                      borderBottom: "1px dotted black",
-                      flex: 1,
-                      maxWidth: "120px",
                       textAlign: "center",
-                      minHeight: "18px",
+                      borderBottom: "1px dotted black",
+                      minHeight: "20px",
+                      marginBottom: "6px",
+                      padding: "0 8px",
                     }}
                   >
-                    {data.approverSignDate
-                      ? formatDate(data.approverSignDate)
-                      : dots(20)}
-                  </span>
+                    {data.approverSignName ? `(${data.approverSignName})` : ""}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "8px",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <span style={{ fontWeight: "bold" }}>วันที่</span>
+                    <span
+                      style={{
+                        borderBottom: "1px dotted black",
+                        flex: 1,
+                        maxWidth: "120px",
+                        textAlign: "center",
+                        minHeight: "18px",
+                      }}
+                    >
+                      {data.approverSignDate
+                        ? formatDate(data.approverSignDate)
+                        : ""}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
-
           {/* ===== SECTION 5 ===== */}
-          <section style={{ marginBottom: "12px" }}>
+          <section
+            style={{
+              pageBreakInside: "avoid",
+              fontFamily: "'Angsana New', sans-serif",
+            }}
+          >
             <div
               style={{
                 fontWeight: "bold",
-                fontSize: "14px",
-                marginBottom: "3px",
+                fontSize: "24px",
+                marginBottom: "4px",
                 display: "flex",
                 gap: "4px",
               }}
@@ -751,22 +795,22 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 gridTemplateColumns: "1fr 1fr 1fr",
                 border: "1px solid black",
                 marginLeft: "20px",
+                fontSize: "20px",
               }}
             >
-              {/* Programmer */}
               <div
                 style={{
                   padding: "8px",
                   borderRight: "1px solid black",
                   display: "flex",
                   flexDirection: "column",
-                  minHeight: "120px",
+                  minHeight: "160px",
                 }}
               >
                 <div
                   style={{
                     fontWeight: "bold",
-                    fontSize: "10px",
+
                     textDecoration: "underline",
                     marginBottom: "6px",
                   }}
@@ -776,10 +820,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 <div
                   style={{
                     textAlign: "center",
-                    fontSize: "10px",
-                    fontStyle: "italic",
                     marginBottom: "auto",
-                    paddingBottom: "8px",
                   }}
                 >
                   (ลงนาม) ผู้พัฒนา
@@ -790,23 +831,23 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                       textAlign: "center",
                       borderBottom: "1px dotted black",
                       minHeight: "18px",
-                      fontSize: "10px",
+
                       marginBottom: "4px",
                     }}
                   >
                     {data.programmerSignName
                       ? `(${data.programmerSignName})`
-                      : `(${dots(30)})`}
+                      : ""}
                   </div>
                   <div
                     style={{
                       display: "flex",
                       gap: "4px",
-                      fontSize: "10px",
+
                       alignItems: "baseline",
                     }}
                   >
-                    <span style={{ fontWeight: "bold" }}>วันที่</span>
+                    <span style={{ fontWeight: "500" }}>วันที่</span>
                     <span
                       style={{
                         borderBottom: "1px dotted black",
@@ -817,12 +858,11 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     >
                       {data.programmerSignDate
                         ? formatDate(data.programmerSignDate)
-                        : dots(18)}
+                        : ""}
                     </span>
                   </div>
                 </div>
               </div>
-
               {/* Deploy */}
               <div
                 style={{
@@ -830,13 +870,12 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                   borderRight: "1px solid black",
                   display: "flex",
                   flexDirection: "column",
-                  minHeight: "120px",
+                  minHeight: "160px",
                 }}
               >
                 <div
                   style={{
                     fontWeight: "bold",
-                    fontSize: "10px",
                     textDecoration: "underline",
                     marginBottom: "6px",
                   }}
@@ -846,10 +885,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 <div
                   style={{
                     textAlign: "center",
-                    fontSize: "10px",
-                    fontStyle: "italic",
                     marginBottom: "auto",
-                    paddingBottom: "8px",
                   }}
                 >
                   (ลงนาม) ผู้ Deploy
@@ -860,23 +896,19 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                       textAlign: "center",
                       borderBottom: "1px dotted black",
                       minHeight: "18px",
-                      fontSize: "10px",
                       marginBottom: "4px",
                     }}
                   >
-                    {data.deployerSignName
-                      ? `(${data.deployerSignName})`
-                      : `(${dots(30)})`}
+                    {data.deployerSignName ? `(${data.deployerSignName})` : ""}
                   </div>
                   <div
                     style={{
                       display: "flex",
                       gap: "4px",
-                      fontSize: "10px",
                       alignItems: "baseline",
                     }}
                   >
-                    <span style={{ fontWeight: "bold" }}>วันที่</span>
+                    <span style={{ fontWeight: "500" }}>วันที่</span>
                     <span
                       style={{
                         borderBottom: "1px dotted black",
@@ -887,25 +919,23 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     >
                       {data.deployerSignDate
                         ? formatDate(data.deployerSignDate)
-                        : dots(18)}
+                        : ""}
                     </span>
                   </div>
                 </div>
               </div>
-
               {/* Approver */}
               <div
                 style={{
                   padding: "8px",
                   display: "flex",
                   flexDirection: "column",
-                  minHeight: "120px",
+                  minHeight: "160px",
                 }}
               >
                 <div
                   style={{
                     fontWeight: "bold",
-                    fontSize: "10px",
                     textDecoration: "underline",
                     marginBottom: "6px",
                   }}
@@ -915,10 +945,7 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                 <div
                   style={{
                     textAlign: "center",
-                    fontSize: "10px",
-                    fontStyle: "italic",
                     marginBottom: "auto",
-                    paddingBottom: "8px",
                   }}
                 >
                   (ลงนาม) หัวหน้าทีม Application
@@ -929,23 +956,21 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                       textAlign: "center",
                       borderBottom: "1px dotted black",
                       minHeight: "18px",
-                      fontSize: "10px",
                       marginBottom: "4px",
                     }}
                   >
                     {data.appTeamLeadSignName
                       ? `(${data.appTeamLeadSignName})`
-                      : `(${dots(30)})`}
+                      : ""}
                   </div>
                   <div
                     style={{
                       display: "flex",
                       gap: "4px",
-                      fontSize: "10px",
                       alignItems: "baseline",
                     }}
                   >
-                    <span style={{ fontWeight: "bold" }}>วันที่</span>
+                    <span style={{ fontWeight: "500" }}>วันที่</span>
                     <span
                       style={{
                         borderBottom: "1px dotted black",
@@ -956,24 +981,27 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                     >
                       {data.appTeamLeadSignDate
                         ? formatDate(data.appTeamLeadSignDate)
-                        : dots(18)}
+                        : ""}
                     </span>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </div>{" "}
+          </section>{" "}
         </div>
-
-        {/* ===== FOOTER ===== */}
         <div
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            marginTop: "12px",
+            marginTop: "16px",
           }}
         >
-          <span style={{ fontWeight: "bold", fontSize: "11px" }}>
+          <span
+            style={{
+              fontStyle: "normal",
+              fontSize: "20px",
+            }}
+          >
             FM-IT-14 : Rev 13/06/68
           </span>
         </div>
