@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "../lib/utils";
 import { Trash2, Save, ArrowLeft, Download } from "lucide-react";
 import { createUATDocument } from "../lib/actions";
 import UATPrintView from "./UATPrintView";
+import { useSession } from "next-auth/react";
 
 interface TestCase {
   tcNo: string;
@@ -20,6 +21,7 @@ interface UATFormProps {
 }
 
 const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     projectName: initialData?.projectName || "",
@@ -55,7 +57,30 @@ const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
     appTeamLeadSignDate: initialData?.appTeamLeadSignDate
       ? new Date(initialData.appTeamLeadSignDate).toISOString().split("T")[0]
       : "",
+    programmerSignatureUrl: initialData?.programmerSignatureUrl || "",
   });
+
+  // Auto-fill from session for new documents
+  useEffect(() => {
+    if (!initialData && session?.user) {
+      const user = session.user as any;
+      setFormData((prev) => ({
+        ...prev,
+        testerName: prev.testerName || user.name || user.username || "",
+        staffId: prev.staffId || user.staffId || "",
+        department: prev.department || user.department || "",
+        // If user is a Dev, pre-fill programmer section too
+        programmerSignName:
+          user.role === "DEV"
+            ? user.name || user.username || ""
+            : prev.programmerSignName,
+        programmerSignatureUrl:
+          user.role === "DEV"
+            ? user.signatureUrl || ""
+            : prev.programmerSignatureUrl,
+      }));
+    }
+  }, [session, initialData]);
 
   const [testCases, setTestCases] = useState<TestCase[]>(
     initialData?.testCases || [
@@ -69,7 +94,9 @@ const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
 
   const [errors, setErrors] = useState<string[]>([]);
 
-  const isViewOnly = initialData && (initialData.status === "Completed" || initialData.status === "Cancelled");
+  const isViewOnly =
+    initialData &&
+    (initialData.status === "Completed" || initialData.status === "Cancelled");
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -219,36 +246,33 @@ const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
       </div>
 
       {/* Screen view */}
-      <div className="max-w-[210mm] mx-auto mb-20 bg-white shadow-2xl overflow-hidden no-print border border-zinc-200">
+      <div className="uat-document-container max-w-[210mm] mx-auto mb-20 bg-white shadow-2xl overflow-hidden no-print border border-zinc-200">
         {/* Top action bar */}
-        <div className="px-8 py-3 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center no-print sticky top-0 z-50 shadow-sm">
+        <div className="px-4 md:px-8 py-3 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center no-print sticky top-0 z-50 shadow-sm gap-2">
           <button
             onClick={onCancel}
             className="flex items-center gap-2 text-zinc-600 hover:text-zinc-900 transition-all font-semibold text-sm"
           >
             <ArrowLeft size={16} />
-            กลับหน้าประวัติ
+            <span className="hidden xs:block">กลับ</span>
           </button>
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3">
             <button
               type="button"
               onClick={() => window.print()}
-              className="flex items-center gap-2 px-4 py-1.5 border border-zinc-300 rounded bg-white text-zinc-700 hover:bg-zinc-50 transition-all shadow-sm text-sm font-medium"
+              className="flex items-center gap-2 px-3 md:px-4 py-1.5 border border-zinc-300 rounded bg-white text-zinc-700 hover:bg-zinc-50 transition-all shadow-sm text-sm font-medium"
             >
               <Download size={16} />
-              Export PDF
+              <span className="hidden sm:block">Export PDF</span>
+              <span className="sm:hidden text-xs">PDF</span>
             </button>
             <button
               onClick={() => handleSubmit()}
               disabled={loading || isViewOnly}
-              className="flex items-center gap-2 px-5 py-1.5 bg-zinc-900 text-white rounded hover:bg-black transition-all disabled:opacity-50 shadow text-sm font-medium"
+              className="flex items-center gap-2 px-4 md:px-5 py-1.5 bg-zinc-900 text-white rounded hover:bg-black transition-all disabled:opacity-50 shadow text-sm font-medium whitespace-nowrap"
             >
               <Save size={16} />
-              {loading
-                ? "กำลังบันทึก..."
-                : isViewOnly
-                  ? "โหมดมุมมอง"
-                  : "บันทึกเอกสาร"}
+              <span>{loading ? "..." : isViewOnly ? "View" : "บันทึก"}</span>
             </button>
           </div>
         </div>
@@ -273,6 +297,7 @@ const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
           <div style={{ flex: 1 }}>
             {/* ===== HEADER ===== */}
             <div
+              className="header-section"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -445,7 +470,7 @@ const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
                       </span>
                       <input
                         name="testerName"
-                        value={formData.testerName}
+                        //alue={formData.testerName}
                         onChange={handleInputChange}
                         readOnly={isViewOnly}
                         className={getInputCls(
@@ -466,7 +491,7 @@ const UATForm = ({ initialData, onSuccess, onCancel }: UATFormProps) => {
                       </span>
                       <input
                         name="staffId"
-                        value={formData.staffId}
+                        //value={formData.staffId}
                         onChange={handleInputChange}
                         readOnly={isViewOnly}
                         className={getInputCls("staffId", "flex-1 text-left")}

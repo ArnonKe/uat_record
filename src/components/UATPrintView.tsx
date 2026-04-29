@@ -821,9 +821,22 @@ const UATPrintView = React.forwardRef<HTMLDivElement, UATPrintViewProps>(
                   style={{
                     textAlign: "center",
                     marginBottom: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  (ลงนาม) ผู้พัฒนา
+                  <div style={{ fontSize: "16px" }}>(ลงนาม) ผู้พัฒนา</div>
+                  {data.programmerSignatureUrl && (
+                    <div style={{ height: "40px", marginTop: "-10px", marginBottom: "-10px" }}>
+                      <img 
+                        src={data.programmerSignatureUrl} 
+                        alt="signature" 
+                        style={{ maxHeight: "100%", maxWidth: "150px", objectFit: "contain" }} 
+                      />
+                    </div>
+                  )}
                 </div>
                 <div>
                   <div

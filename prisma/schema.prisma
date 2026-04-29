@@ -33,6 +33,7 @@ model UATDocument {
   // Approval Section 5
   programmerSignName String?
   programmerSignDate DateTime?
+  programmerSignatureUrl String?
   deployerSignName   String?
   deployerSignDate   DateTime?
   appTeamLeadSignName String?
@@ -63,4 +64,17 @@ model UATTestCase {
   document UATDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   @@index([documentId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  password      String
+  name          String?
+  staffId       String?
+  department    String?
+  role          String    @default("USER") // USER, ADMIN, DEV
+  signatureUrl  String?   // Base64 or image path
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
