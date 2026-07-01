@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, User, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
@@ -11,6 +11,8 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const authError = searchParams.get("error");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export default function LoginPage() {
         router.push("/");
         router.refresh();
       }
-    } catch (err) {
+    } catch {
       setError("เกิดข้อผิดพลาดในการเชื่อมต่อ");
     } finally {
       setLoading(false);
@@ -53,9 +55,14 @@ export default function LoginPage() {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
+          {(error || authError) && (
             <div className="p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-lg text-center animate-shake">
-              {error}
+              {error ||
+                (authError === "Configuration"
+                  ? "ระบบยืนยันตัวตนยังไม่ได้ตั้งค่าในสภาพแวดล้อมการ deploy"
+                  : authError === "CredentialsSignin"
+                    ? "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+                    : "เกิดข้อผิดพลาดในการเข้าสู่ระบบ")}
             </div>
           )}
 

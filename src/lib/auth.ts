@@ -1,14 +1,39 @@
 import { NextAuthOptions } from "next-auth";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "./prisma";
 
 const authSecret = process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET;
 
-if (!authSecret) {
-  throw new Error(
-    "Missing auth secret. Set NEXTAUTH_SECRET or AUTH_SECRET in the deployment environment."
-  );
-}
+type AuthToken = JWT & {
+  role?: string;
+  username?: string;
+  staffId?: string | null;
+  department?: string | null;
+  signatureUrl?: string | null;
+};
+
+type AuthSession = Session & {
+  user: NonNullable<Session["user"]> & {
+    id?: string;
+    role?: string;
+    username?: string;
+    staffId?: string | null;
+    department?: string | null;
+    signatureUrl?: string | null;
+  };
+};
+
+type AuthUser = {
+  id: string | number;
+  name?: string | null;
+  username?: string;
+  role?: string;
+  staffId?: string | null;
+  department?: string | null;
+  signatureUrl?: string | null;
+};
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -16,6 +41,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
+    error: "/login",
   },
   secret: authSecret,
   providers: [
@@ -28,8 +54,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
-        const db = prisma as any;
-        const user = await db.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: { username: credentials.username },
         });
 
@@ -52,25 +77,33 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      const authToken = token as AuthToken;
+
       if (user) {
-        token.role = (user as any).role;
-        token.username = (user as any).username;
-        token.staffId = (user as any).staffId;
-        token.department = (user as any).department;
-        token.signatureUrl = (user as any).signatureUrl;
+        const authUser = user as AuthUser;
+        authToken.role = authUser.role;
+        authToken.username = authUser.username;
+        authToken.staffId = authUser.staffId;
+        authToken.department = authUser.department;
+        authToken.signatureUrl = authUser.signatureUrl;
       }
-      return token;
+
+      return authToken;
     },
     async session({ session, token }) {
+      const authSession = session as AuthSession;
+      const authToken = token as AuthToken;
+
       if (token) {
-        (session.user as any).id = token.sub;
-        (session.user as any).role = token.role;
-        (session.user as any).username = token.username;
-        (session.user as any).staffId = token.staffId;
-        (session.user as any).department = token.department;
-        (session.user as any).signatureUrl = token.signatureUrl;
+        authSession.user.id = authToken.sub;
+        authSession.user.role = authToken.role;
+        authSession.user.username = authToken.username;
+        authSession.user.staffId = authToken.staffId;
+        authSession.user.department = authToken.department;
+        authSession.user.signatureUrl = authToken.signatureUrl;
       }
-      return session;
+
+      return authSession;
     },
   },
 };
