@@ -9,6 +9,25 @@ type LoginFormProps = {
   initialError: string | null;
 };
 
+const ERROR_INVALID_CREDENTIALS =
+  "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+const ERROR_CONNECTION =
+  "เกิดข้อผิดพลาดในการเชื่อมต่อ";
+const ERROR_CONFIGURATION =
+  "ระบบยืนยันตัวยังไม่ได้ตั้งค่าในสภาพแวดล้อมการ deploy";
+const ERROR_GENERIC =
+  "เกิดข้อผิดพลาดในการเข้าสู่ระบบ";
+const TITLE = "เข้าสู่ระบบ UAT Tracker";
+const DESCRIPTION =
+  "กรุณาเข้าสู่ระบบเพื่อจัดการเอกสาร UAT ของคุณ";
+const USERNAME_LABEL = "ชื่อผู้ใช้ (Username)";
+const USERNAME_PLACEHOLDER =
+  "กรอกชื่อผู้ใช้";
+const PASSWORD_LABEL = "รหัสผ่าน (Password)";
+const PASSWORD_PLACEHOLDER =
+  "กรอกรหัสผ่าน";
+const SUBMIT_TEXT = "เข้าสู่ระบบ";
+
 export default function LoginForm({ initialError }: LoginFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,13 +48,13 @@ export default function LoginForm({ initialError }: LoginFormProps) {
       });
 
       if (res?.error) {
-        setError("à¸Šà¸·à¹ˆà¸­à¸œà¸¹à¹‰à¹ƒà¸Šà¹‰à¸«à¸£à¸·à¸­à¸£à¸«à¸±à¸ªà¸œà¹ˆà¸²à¸™à¹„à¸¡à¹ˆà¸–à¸¹à¸à¸•à¹‰à¸­à¸‡");
+        setError(ERROR_INVALID_CREDENTIALS);
       } else {
         router.push("/");
         router.refresh();
       }
     } catch {
-      setError("à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¹€à¸Šà¸·à¹ˆà¸­à¸¡à¸•à¹ˆà¸­");
+      setError(ERROR_CONNECTION);
     } finally {
       setLoading(false);
     }
@@ -44,11 +63,11 @@ export default function LoginForm({ initialError }: LoginFormProps) {
   const message =
     error ||
     (initialError === "Configuration"
-      ? "ระบบยืนยันตัวยังไม่ได้ตั้งค่าในสภาพแวดล้อมการ deploy"
+      ? ERROR_CONFIGURATION
       : initialError === "CredentialsSignin"
-        ? "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+        ? ERROR_INVALID_CREDENTIALS
         : initialError
-          ? "เกิดข้อผิดพลาดในการเข้าสู่ระบบ"
+          ? ERROR_GENERIC
           : "");
 
   return (
@@ -59,11 +78,9 @@ export default function LoginForm({ initialError }: LoginFormProps) {
             U
           </div>
           <h2 className="text-3xl font-extrabold text-zinc-900 tracking-tight">
-            เข้าสู่ระบบ UAT Tracker
+            {TITLE}
           </h2>
-          <p className="mt-2 text-zinc-500">
-            กรุณาเข้าสู่ระบบเพื่อจัดการเอกสาร UAT ของคุณ
-          </p>
+          <p className="mt-2 text-zinc-500">{DESCRIPTION}</p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -76,7 +93,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
           <div className="space-y-4">
             <div className="relative">
               <label className="text-sm font-semibold text-zinc-700 mb-1 block">
-                ชื่อผู้ใช้ (Username)
+                {USERNAME_LABEL}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -87,7 +104,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
                   required
                   autoComplete="off"
                   className="block w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-zinc-900"
-                  placeholder="กรอกชื่อผู้ใช้"
+                  placeholder={USERNAME_PLACEHOLDER}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -96,7 +113,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
 
             <div className="relative">
               <label className="text-sm font-semibold text-zinc-700 mb-1 block">
-                รหัสผ่าน (Password)
+                {PASSWORD_LABEL}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -107,7 +124,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
                   required
                   autoComplete="off"
                   className="block w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-zinc-900"
-                  placeholder="กรอกรหัสผ่าน"
+                  placeholder={PASSWORD_PLACEHOLDER}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -120,11 +137,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
             disabled={loading}
             className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98]"
           >
-            {loading ? (
-              <Loader2 className="animate-spin" size={24} />
-            ) : (
-              "เข้าสู่ระบบ"
-            )}
+            {loading ? <Loader2 className="animate-spin" size={24} /> : SUBMIT_TEXT}
           </button>
         </form>
 
