@@ -54,14 +54,17 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
+        const username = credentials.username.trim();
+        const password = credentials.password.trim();
+
         const user = await prisma.user.findUnique({
-          where: { username: credentials.username },
+          where: { username: username },
         });
 
         if (!user) return null;
 
         // Simple check for now, in production use bcrypt
-        if (user.password !== credentials.password) return null;
+        if (user.password !== password) return null;
 
         return {
           id: user.id,
