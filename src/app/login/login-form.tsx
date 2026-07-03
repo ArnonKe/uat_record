@@ -44,11 +44,11 @@ export default function LoginForm({ initialError }: LoginFormProps) {
   const message =
     error ||
     (initialError === "Configuration"
-      ? "à¸£à¸°à¸šà¸šà¸¢à¸·à¸™à¸¢à¸±à¸™à¸•à¸±à¸§à¸•à¸™à¸¢à¸±à¸‡à¹„à¸¡à¹ˆà¹„à¸”à¹‰à¸•à¸±à¹‰à¸‡à¸„à¹ˆà¸²à¹ƒà¸™à¸ªà¸ à¸²à¸žà¹à¸§à¸”à¸¥à¹‰à¸­à¸¡à¸à¸²à¸£ deploy"
+      ? "ระบบยืนยันตัวยังไม่ได้ตั้งค่าในสภาพแวดล้อมการ deploy"
       : initialError === "CredentialsSignin"
-        ? "à¸Šà¸·à¹ˆà¸­à¸œà¸¹à¹‰à¹ƒà¸Šà¹‰à¸«à¸£à¸·à¸­à¸£à¸«à¸±à¸ªà¸œà¹ˆà¸²à¸™à¹„à¸¡à¹ˆà¸–à¸¹à¸à¸•à¹‰à¸­à¸‡"
+        ? "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
         : initialError
-          ? "à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¹€à¸‚à¹‰à¸²à¸ªà¸¹à¹ˆà¸£à¸°à¸šà¸š"
+          ? "เกิดข้อผิดพลาดในการเข้าสู่ระบบ"
           : "");
 
   return (
@@ -59,10 +59,10 @@ export default function LoginForm({ initialError }: LoginFormProps) {
             U
           </div>
           <h2 className="text-3xl font-extrabold text-zinc-900 tracking-tight">
-            à¹€à¸‚à¹‰à¸²à¸ªà¸¹à¹ˆà¸£à¸°à¸šà¸š UAT Tracker
+            เข้าสู่ระบบ UAT Tracker
           </h2>
           <p className="mt-2 text-zinc-500">
-            à¸à¸£à¸¸à¸“à¸²à¹€à¸‚à¹‰à¸²à¸ªà¸¹à¹ˆà¸£à¸°à¸šà¸šà¹€à¸žà¸·à¹ˆà¸­à¸ˆà¸±à¸”à¸à¸²à¸£à¹€à¸­à¸à¸ªà¸²à¸£ UAT à¸‚à¸­à¸‡à¸„à¸¸à¸“
+            กรุณาเข้าสู่ระบบเพื่อจัดการเอกสาร UAT ของคุณ
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
           <div className="space-y-4">
             <div className="relative">
               <label className="text-sm font-semibold text-zinc-700 mb-1 block">
-                à¸Šà¸·à¹ˆà¸­à¸œà¸¹à¹‰à¹ƒà¸Šà¹‰ (Username)
+                ชื่อผู้ใช้ (Username)
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -87,7 +87,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
                   required
                   autoComplete="off"
                   className="block w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-zinc-900"
-                  placeholder="à¸à¸£à¸­à¸à¸Šà¸·à¹ˆà¸­à¸œà¸¹à¹‰à¹ƒà¸Šà¹‰"
+                  placeholder="กรอกชื่อผู้ใช้"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -96,7 +96,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
 
             <div className="relative">
               <label className="text-sm font-semibold text-zinc-700 mb-1 block">
-                à¸£à¸«à¸±à¸ªà¸œà¹ˆà¸²à¸™ (Password)
+                รหัสผ่าน (Password)
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -107,7 +107,7 @@ export default function LoginForm({ initialError }: LoginFormProps) {
                   required
                   autoComplete="off"
                   className="block w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-zinc-900"
-                  placeholder="à¸à¸£à¸­à¸à¸£à¸«à¸±à¸ªà¸œà¹ˆà¸²à¸™"
+                  placeholder="กรอกรหัสผ่าน"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -123,13 +123,13 @@ export default function LoginForm({ initialError }: LoginFormProps) {
             {loading ? (
               <Loader2 className="animate-spin" size={24} />
             ) : (
-              "à¹€à¸‚à¹‰à¸²à¸ªà¸¹à¹ˆà¸£à¸°à¸šà¸š"
+              "เข้าสู่ระบบ"
             )}
           </button>
         </form>
 
         <div className="text-center text-sm text-zinc-400 mt-8">
-          Â© {new Date().getFullYear()} UAT Acceptance System
+          © {new Date().getFullYear()} UAT Acceptance System
         </div>
       </div>
     </div>
